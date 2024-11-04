@@ -11,10 +11,6 @@ const LoginForm = () => {
         rememberMe: false,
     });
 
-    const [errors, setErrors] = useState({
-        wrongPassword: ''
-    });
-
     const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate()
