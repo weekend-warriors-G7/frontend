@@ -1,9 +1,9 @@
 import ProductTag from './ProductTag.js';
 
 class Product {
-    constructor(thumbnail, images, name, price, description, tags = []) {
+    constructor(thumbnail, image, name, price, description, tags = []) {
         this._thumbnail = thumbnail;
-        this._images = images;
+        this._image = image;
         this._name = name;
         this._price = price;
         this._description = description;
@@ -15,8 +15,8 @@ class Product {
         return this._thumbnail;
     }
 
-    get images() {
-        return this._images;
+    get image() {
+        return this._image;
     }
 
     get name() {
@@ -40,12 +40,8 @@ class Product {
         this._thumbnail = value;
     }
 
-    set images(value) {
-        if (Array.isArray(value)) {
-            this._images = value;
-        } else {
-            console.error("Images should be an array");
-        }
+    set image(value) {
+        this._image = value;
     }
 
     set name(value) {
@@ -92,7 +88,7 @@ class Product {
         console.log(`Price: $${this._price}`);
         console.log(`Description: ${this._description}`);
         console.log(`Thumbnail: ${this._thumbnail}`);
-        console.log("Images:", this._images);
+        console.log("Image:", this._image);
         console.log("Tags:", this._tags);
     }
 }
