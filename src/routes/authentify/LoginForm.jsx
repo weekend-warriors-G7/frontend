@@ -16,7 +16,7 @@ const LoginForm = () => {
     const navigate = useNavigate()
 
     const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
+        const { name, value, checked } = e.target;
         setFormData({
             ...formData,
             [name]: name === 'rememberMe' ? checked : value,
