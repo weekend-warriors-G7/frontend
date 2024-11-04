@@ -16,6 +16,8 @@ const RegisterForm = () => {
     const [errors, setErrors] = useState({
         confirmPassword: "",
         passwordLength: "",
+        capitalLetter: "",
+        numberPassword: "",
     });
 
     const [loading, setLoading] = useState(false);
@@ -33,6 +35,8 @@ const RegisterForm = () => {
 
         if(name === "password") {
             validatePasswordLength(value);
+            validateAtLeastOneCapitalLetter(value);
+            validateAtLeastOneNumber(value);
         }
 
         // Check for password match if updating confirmPassword field
@@ -69,12 +73,54 @@ const RegisterForm = () => {
         }
     };
 
+    const validateAtLeastOneCapitalLetter = (password) => {
+
+        let hasCapitalLetter = false;
+        for(let character of password){
+            if(character >= 'A' && character <= 'Z')
+            {
+                hasCapitalLetter = true;
+                break;
+            }
+        }
+
+        if(hasCapitalLetter){
+            setErrors((prevErrors) =>
+                ({...prevErrors, capitalLetter: ""}));
+        }
+        else {
+            setErrors((prevErrors) => ({...prevErrors, capitalLetter: "Password must have at least one capital letter",}));
+        }
+    };
+
+    const validateAtLeastOneNumber = (password)=>{
+        let hasNumber = false;
+        for(let character of password){
+            if(character >= '0' && character <= '9')
+            {
+                hasNumber = true;
+                break;
+            }
+        }
+        if(hasNumber){setErrors((prevErrors) => ({...prevErrors, numberPassword: ""}));}
+        else
+        {
+            setErrors((prevErrors)=>({...prevErrors, numberPassword: "Password must have at least one number",}));
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (errors.confirmPassword) {
-            alert("Please correct errors before submitting.");
+        if (errors.confirmPassword || errors.capitalLetter || errors.passwordLength || errors.numberPassword) {
+            alert("Please fix the password.");
             return;
         }
+
+        if (errors.capitalLetter) {
+            alert(errors.capitalLetter);
+            return;
+        }
+
         setLoading(true);
 
         try {
@@ -159,6 +205,16 @@ const RegisterForm = () => {
                         {errors.passwordLength && (
                             <p className="mt-1 text-sm text-red-500">{errors.passwordLength}</p>
                         )}
+                        {
+                            errors.capitalLetter && (
+                                <p className="mt-1 text-sm text-red-500">{errors.capitalLetter}</p>
+                            )
+                        }
+                        {
+                            errors.numberPassword && (
+                                <p className="mt-1 text-sm text-red-500">{errors.numberPassword}</p>
+                            )
+                        }
                     </div>
 
                     <div>
