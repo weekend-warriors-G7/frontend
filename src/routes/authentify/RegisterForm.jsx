@@ -18,6 +18,8 @@ const RegisterForm = () => {
         passwordLength: "",
         capitalLetter: "",
         numberPassword: "",
+        symbolPassword: "",
+        emailError: "",
     });
 
     const [loading, setLoading] = useState(false);
@@ -27,7 +29,6 @@ const RegisterForm = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
 
-        // Update form data
         setFormData({
             ...formData,
             [name]: value,
@@ -37,9 +38,9 @@ const RegisterForm = () => {
             validatePasswordLength(value);
             validateAtLeastOneCapitalLetter(value);
             validateAtLeastOneNumber(value);
+            validateAtLeastOneSymbol(value);
         }
 
-        // Check for password match if updating confirmPassword field
         if (name === "confirmPassword" || name === "password") {
             validateConfirmPassword(name === "confirmPassword" ? value : formData.confirmPassword);
         }
@@ -109,39 +110,44 @@ const RegisterForm = () => {
         }
     };
 
+    const validateAtLeastOneSymbol = (password) => {
+        let hasAtLeastOneSymbol = false;
+        for(let character of password){
+            if(character >= '!' && character <= '/')
+            {
+                hasAtLeastOneSymbol = true;
+                break;
+            }
+        }
+        if(hasAtLeastOneSymbol){setErrors((prevErrors) => ({...prevErrors, symbolPassword: ""}));}
+        else
+        {
+            setErrors((prevErrors)=>({...prevErrors, symbolPassword: "Password must have at least one symbol ! # $ % & ( ) * + - . / , ' ",}));
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (errors.confirmPassword || errors.capitalLetter || errors.passwordLength || errors.numberPassword) {
-            alert("Please fix the password.");
-            return;
-        }
-
-        if (errors.capitalLetter) {
-            alert(errors.capitalLetter);
+        if (errors.confirmPassword || errors.capitalLetter || errors.passwordLength || errors.numberPassword || errors.symbolPassword) {
             return;
         }
 
         setLoading(true);
 
         try {
-            await new Promise((resolve) => setTimeout(resolve, 2000));
-           /*
-
-            console.log(formData);
-            navigate("/login");*/
-
-            console.log(formData);
-
             const dataToSend = {email: formData.email, password: formData.password};
-
-            const response = await axios.post('https://your_api_endpoint.com/register', dataToSend);
-
-            if (response.status === 200) {
+            const response = await axios.post('http://localhost:8080/api/v1/auth/register', dataToSend);
+            if (response.status === 201) {
                 navigate("/login");
             }
         } catch (error) {
-            alert("Registration failed:", error.response ? error.response.data : error.message);
-            console.error("Registration failed:", (error.response ? error.response.data : error.message));
+            if (error.response.status === 400) {
+                console.error('Validation error:', error.response.data);
+                setErrors((prevErrors) => ({...prevErrors, passwordLength: error.response.data.error || 'Invalid Password',}));
+            } else if (error.response.status === 409) {
+                console.error('User already exists.', error.response.data);
+                setErrors((prevErrors) => ({...prevErrors, emailError: error.response.data.error || 'Email already in use.',}));
+            }
         } finally {
             setLoading(false);
         }
@@ -150,7 +156,7 @@ const RegisterForm = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-bgColour">
+        <div className="flex mt-9 items-center justify-center min-h-screen bg-bgColour">
             {loading ? (
                 <div className="flex items-center justify-center">
                     <Spinner></Spinner>
@@ -159,21 +165,6 @@ const RegisterForm = () => {
             <div className="w-full max-w-md p-6 space-y-6 bg-white rounded-lg shadow-md">
                 <h2 className="text-2xl font-qbold text-center text-black">Register</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <label htmlFor="username" className="block text-sm font-qregular text-black">
-                            Username
-                        </label>
-                        <input
-                            type="text"
-                            id="username"
-                            name="username"
-                            value={formData.username}
-                            onChange={handleChange}
-                            required
-                            className="w-full px-4 py-2 mt-2 border border-elemColour rounded-md focus:outline-none focus:ring-2 focus:ring-linkColour"
-                        />
-                    </div>
-
                     <div>
                         <label htmlFor="email" className="block text-sm font-qregular text-black">
                             Email
@@ -187,6 +178,9 @@ const RegisterForm = () => {
                             required
                             className="w-full px-4 py-2 mt-2 border border-elemColour rounded-md focus:outline-none focus:ring-2 focus:ring-linkColour"
                         />
+                        {errors.emailError && (
+                            <p className="mt-1 text-sm text-red-500">{errors.emailError}</p>
+                        )}
                     </div>
 
                     <div>
@@ -203,16 +197,21 @@ const RegisterForm = () => {
                             className="w-full px-4 py-2 mt-2 border border-elemColour rounded-md focus:outline-none focus:ring-2 focus:ring-linkColour"
                         />
                         {errors.passwordLength && (
-                            <p className="mt-1 text-sm text-red-500">{errors.passwordLength}</p>
+                            <p className="text-sm text-red-500">{errors.passwordLength}</p>
                         )}
                         {
                             errors.capitalLetter && (
-                                <p className="mt-1 text-sm text-red-500">{errors.capitalLetter}</p>
+                                <p className="text-sm text-red-500">{errors.capitalLetter}</p>
                             )
                         }
                         {
                             errors.numberPassword && (
-                                <p className="mt-1 text-sm text-red-500">{errors.numberPassword}</p>
+                                <p className="text-sm text-red-500">{errors.numberPassword}</p>
+                            )
+                        }
+                        {
+                            errors.symbolPassword && (
+                                <p className="text-sm text-red-500">{errors.symbolPassword}</p>
                             )
                         }
                     </div>

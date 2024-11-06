@@ -11,6 +11,7 @@ const LoginForm = () => {
         rememberMe: false,
     });
 
+    const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate()
@@ -30,28 +31,24 @@ const LoginForm = () => {
         try {
             await new Promise((resolve) => setTimeout(resolve, 2000));
 
-            /*
-            console.log(formData);
-
-            navigate("/");*/
-
-            console.log(formData);
-
             const dataToSend = {email: formData.email, password: formData.password};
+            const response = await axios.post('http://localhost:8080/api/v1/auth/login', dataToSend);
 
-            const response = await axios.post('https://your_api_endpoint.com/login', dataToSend);
-
-            if(response.status === 200)
-            {
-                const {token} = response.data.token;
-                const {expiryDate} = response.data.expiryDate;
-                localStorage.setItem('authenticationToken', token);
-                localStorage.setItem('authenticationTokenExpiryDate', expiryDate);
-                navigate("/");
+            if (response.status === 200) {
+                const { accessToken, refreshToken } = response.data.token;
+                localStorage.setItem('accessToken', accessToken);
+                if(formData.rememberMe)
+                    localStorage.setItem('refreshToken', refreshToken)
+                navigate('/'); // Nav to the main page
             }
         } catch (error) {
-            alert("Login failed:", error.response ? error.response.data : error.message);
-            console.error("Login failed:", (error.response ? error.response.data : error.message));
+            if (error.response.status === 404) {
+                console.error('Bad request, validation error:', error.response.data);
+                setError(error.response.data.error || 'Incorrect input');
+            } else if (error.response.status === 400) {
+                console.error('User not found:', error.response.data);
+                setError('Email or password not correct');
+            }
         } finally {
             setLoading(false);
         }
@@ -91,6 +88,7 @@ const LoginForm = () => {
                             required
                             className="w-full px-4 py-2 mt-1 border border-elemColour rounded-md focus:outline-none focus:ring-2 focus:ring-linkColour"
                         />
+                        {error && <div className="text-red-500 text-sm">{error}</div>}
                     </div>
 
                     <div className="flex items-center justify-between">
