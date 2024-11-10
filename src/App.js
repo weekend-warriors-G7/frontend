@@ -9,7 +9,18 @@ import Product from './domain/Product';
 import ProductList from './routes/ProductList';
 
 function App() {
-  const testProduct = new Product(1, "https://www.stormtech.ca/cdn/shop/products/KNC-2W_FRONT_GreyHeather.jpg?v=1687462614&width=2400", "https://www.stormtech.ca/cdn/shop/products/KNC-2W_FRONT_GreyHeather.jpg?v=1687462614&width=2400", "Cardigan", 50, "This is a beautiful, well-tailored cardigan");
+  const testProduct = 
+    new Product(
+        1,
+        "https://www.stormtech.ca/cdn/shop/products/KNC-2W_FRONT_GreyHeather.jpg?v=1687462614&width=2400",
+        "Cardigan",
+        50, 
+        "This is a beautiful, well-tailored cardigan.",
+        "M",
+        "top",
+        "cotton",
+        "grey"
+    );
   const testProductList = [testProduct, testProduct, testProduct, testProduct, testProduct, testProduct, testProduct, testProduct];
 
   return (
