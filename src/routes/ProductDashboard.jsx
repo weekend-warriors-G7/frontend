@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Product from '../domain/Product';
-import ProductTag from '../domain/ProductTag';
 
 const ProductDashboard = ({ product }) => {
     return (
@@ -14,6 +13,19 @@ const ProductDashboard = ({ product }) => {
                 </div>
                 <h2 className="text-2xl font-bold text-center text-black "><p className="text-accentColour">{product.price}$</p></h2>
                 <p className="text-center">{product.description}</p>
+                
+                <div className="tags flex justify-around">
+                    <div className="left">
+                        <p className="text-center">Type <span className="text-accentColour font-bold">{product.clothingType}</span></p>
+                        <p className="text-center">Size <span className="text-accentColour font-bold">{product.size}</span></p>
+                    </div>
+
+                    <div className="right">
+                        <p className="text-center">Material <span className="text-accentColour font-bold">{product.material}</span></p>
+                        <p className="text-center">Colour <span className="text-accentColour font-bold">{product.colour}</span></p>
+                    </div>
+                </div>
+                
                 <button
                         type="submit"
                         className="w-full px-4 py-2 font-qbold text-white bg-accentColour rounded-md hover:bg-linkColour focus:outline-none"
