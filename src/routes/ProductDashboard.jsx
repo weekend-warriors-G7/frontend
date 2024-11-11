@@ -9,7 +9,7 @@ const ProductDashboard = ({ product }) => {
                 <h2 className="text-2xl font-bold text-center text-black">{product.name}</h2>
                 {/* <img src={product.thumbnail} alt={`${product.name} thumbnail`} className="product-thumbnail" /> */}
                 <div className="product-image">
-                    <img src={product.image} alt={`${product.name} main image`} className="product-main-image" />
+                    <img src={product.image} alt={`${product.name} main`} className="product-main-image" />
                 </div>
                 <h2 className="text-2xl font-bold text-center text-black "><p className="text-accentColour">{product.price}$</p></h2>
                 <p className="text-center">{product.description}</p>

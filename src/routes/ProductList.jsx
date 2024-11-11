@@ -13,7 +13,7 @@ const ProductList = ({ productList }) => {
                     >
                         <h2 className="text-2xl font-bold text-center text-black">{product.name}</h2>
                         <div className="product-image h-48 overflow-hidden items-center">
-                            <img src={product.image} alt={`${product.name} main image`} className="h-full" />
+                            <img src={product.image} alt={`${product.name} main`} className="h-full" />
                         </div>
                         <h2 className="text-2xl font-bold text-center text-black">
                             <p className="text-accentColour">{product.price}$</p>
