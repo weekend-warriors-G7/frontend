@@ -49,7 +49,7 @@ function App() {
           path="products/"
           element={<ProductList productList={testProductList} />}
         />
-        <Route path="add-product" element={<AddProductForm />} />
+        <Route path="products/add" element={<AddProductForm />} />
       </Routes>
     </BrowserRouter>
   );
