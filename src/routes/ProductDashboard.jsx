@@ -1,17 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Product from '../domain/Product';
+import { useParams } from 'react-router-dom';
+import axiosInstance from '../axiosInstance';
 
-const ProductDashboard = ({ product }) => {
+const ProductDashboard = () => {
+    const { id } = useParams(); // Get the product ID from the URL
+    const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        // Fetch the product data based on the ID from the URL
+        axiosInstance.get(`http://localhost:8080/products/${id}`)
+            .then(response => {
+                setProduct(response.data);
+                setLoading(false);
+            })
+            .catch(error => {
+                console.error("Error fetching the product:", error);
+                setError("Product not found or an error occurred");
+                setLoading(false);
+            });
+    }, [id]);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>{error}</p>;
+
     return (
         <div className="flex items-center justify-center min-h-screen bg-bgColour">
-            <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
+            <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md mt-8 mb-8">
                 <h2 className="text-2xl font-bold text-center text-black">{product.name}</h2>
-                {/* <img src={product.thumbnail} alt={`${product.name} thumbnail`} className="product-thumbnail" /> */}
+                
                 <div className="product-image">
-                    <img src={product.image} alt={`${product.name} main`} className="product-main-image" />
+                    <img src={product.imageId} alt={`${product.name} main`} className="product-main-image" />
                 </div>
-                <h2 className="text-2xl font-bold text-center text-black "><p className="text-accentColour">{product.price}$</p></h2>
+                
+                <h2 className="text-2xl font-bold text-center text-black">
+                    <p className="text-accentColour">{product.price}$</p>
+                </h2>
+                
                 <p className="text-center">{product.description}</p>
                 
                 <div className="tags flex justify-around">
@@ -27,13 +55,13 @@ const ProductDashboard = ({ product }) => {
                 </div>
                 
                 <button
-                        type="submit"
-                        className="w-full px-4 py-2 font-qbold text-white bg-accentColour rounded-md hover:bg-linkColour focus:outline-none"
-                    >
-                        Add to cart
+                    type="submit"
+                    className="w-full px-4 py-2 font-bold text-white bg-accentColour rounded-md hover:bg-linkColour focus:outline-none"
+                >
+                    Add to cart
                 </button>
             </div>
-	</div>
+	    </div>
     );
 };
 
