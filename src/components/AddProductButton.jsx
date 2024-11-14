@@ -5,7 +5,7 @@ const AddProductButton = () => {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    navigate("/add-product");
+    navigate("/products/add");
   };
   return (
     <div>
