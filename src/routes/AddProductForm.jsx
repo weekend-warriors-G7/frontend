@@ -63,7 +63,7 @@ const AddProductForm = () => {
       );
 
       if (response.status === 200) {
-        navigate("products/");
+        navigate("/products");
       }
     } catch (error) {
       setError("Failed to add product");
