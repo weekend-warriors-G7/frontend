@@ -5,6 +5,7 @@ import RegisterForm from "./routes/authentify/RegisterForm";
 import LoginForm from "./routes/authentify/LoginForm";
 import HeaderTest from "./components/HeaderTest";
 import ProductDashboard from "./routes/ProductDashboard";
+import ProfileDashboard from "./routes/ProfileDashboard";
 import ProductList from "./routes/ProductList";
 import AddProductForm from "./routes/AddProductForm";
 import { AuthProvider } from "./context/AuthContext";
@@ -37,6 +38,7 @@ function App() {
           <Route path="products/add" element={<AddProductForm />} />
           <Route path="products/:id" element={<ProductDashboard />} />
           <Route path="products" element={<ProductList />} />
+          <Route path="profile" element={<ProfileDashboard />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

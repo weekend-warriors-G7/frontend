@@ -80,9 +80,9 @@ class Product {
     set size(value) {
         this._size = value;
     }
-    
+
     set clothingType(value) {
-        this._clothingType  = value;
+        this._clothingType = value;
     }
 
     set material(value) {
@@ -92,7 +92,7 @@ class Product {
     set colour(value) {
         this._colour = value;
     }
-    
+
     // Method to display product details
     displayProduct() {
         console.log(`ID: ${this._id}`);
