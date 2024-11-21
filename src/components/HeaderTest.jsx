@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import LogoutButton from "./LogoutButton";
 import AddProductButton from "./AddProductButton";
 import { AuthContext } from "../context/AuthContext"; // Import AuthContext
+import ProfileButton from "./ProfileButton";
 
 const HeaderTest = () => {
   const { isAuthenticated } = useContext(AuthContext); // Access auth state
@@ -15,6 +16,7 @@ const HeaderTest = () => {
           {isAuthenticated && (
             <>
               <AddProductButton />
+              <ProfileButton />
               <LogoutButton />
             </>
           )}

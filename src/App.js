@@ -30,16 +30,18 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <HeaderTest />
-        <Routes>
-          {/* Redirect from root path */}
-          <Route path="/" element={<HomeRedirect />} />
-          <Route path="register" element={<RegisterForm />} />
-          <Route path="login" element={<LoginForm />} />
-          <Route path="products/add" element={<AddProductForm />} />
-          <Route path="products/:id" element={<ProductDashboard />} />
-          <Route path="products" element={<ProductList />} />
-          <Route path="profile" element={<ProfileDashboard />} />
-        </Routes>
+        <div className="mt-24">
+          <Routes>
+            {/* Redirect from root path */}
+            <Route path="/" element={<HomeRedirect />} />
+            <Route path="register" element={<RegisterForm />} />
+            <Route path="login" element={<LoginForm />} />
+            <Route path="products/add" element={<AddProductForm />} />
+            <Route path="products/:id" element={<ProductDashboard />} />
+            <Route path="products" element={<ProductList />} />
+            <Route path="profile" element={<ProfileDashboard />} />
+          </Routes>
+        </div>
       </BrowserRouter>
     </AuthProvider>
   );
