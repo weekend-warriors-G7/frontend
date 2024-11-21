@@ -5,6 +5,7 @@ import RegisterForm from "./routes/authentify/RegisterForm";
 import LoginForm from "./routes/authentify/LoginForm";
 import HeaderTest from "./components/HeaderTest";
 import ProductDashboard from "./routes/ProductDashboard";
+// import ProfileDashboard from "./routes/ProfileDashboard";
 import ProductList from "./routes/ProductList";
 import AddProductForm from "./routes/AddProductForm";
 import { AuthProvider } from "./context/AuthContext";
@@ -29,15 +30,18 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <HeaderTest />
-        <Routes>
-          {/* Redirect from root path */}
-          <Route path="/" element={<HomeRedirect />} />
-          <Route path="register" element={<RegisterForm />} />
-          <Route path="login" element={<LoginForm />} />
-          <Route path="products/add" element={<AddProductForm />} />
-          <Route path="products/:id" element={<ProductDashboard />} />
-          <Route path="products" element={<ProductList />} />
-        </Routes>
+        <div className="mt-24">
+          <Routes>
+            {/* Redirect from root path */}
+            <Route path="/" element={<HomeRedirect />} />
+            <Route path="register" element={<RegisterForm />} />
+            <Route path="login" element={<LoginForm />} />
+            <Route path="products/add" element={<AddProductForm />} />
+            <Route path="products/:id" element={<ProductDashboard />} />
+            <Route path="products" element={<ProductList />} />
+            {/* <Route path="profile" element={<ProfileDashboard />} /> */}
+          </Routes>
+        </div>
       </BrowserRouter>
     </AuthProvider>
   );
