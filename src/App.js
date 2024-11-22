@@ -9,6 +9,7 @@ import ProductDashboard from "./routes/ProductDashboard";
 import ProductList from "./routes/ProductList";
 import AddProductForm from "./routes/AddProductForm";
 import { AuthProvider } from "./context/AuthContext";
+import UpdateProductForm from "./routes/UpdateProductForm";
 
 // Function to check if the user is authenticated
 function isAuthenticated() {
@@ -39,6 +40,7 @@ function App() {
             <Route path="products/add" element={<AddProductForm />} />
             <Route path="products/:id" element={<ProductDashboard />} />
             <Route path="products" element={<ProductList />} />
+            <Route path="/update-product/:id" element={<UpdateProductForm />} />
             {/* <Route path="profile" element={<ProfileDashboard />} /> */}
           </Routes>
         </div>
