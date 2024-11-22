@@ -16,7 +16,7 @@ const HeaderTest = () => {
           {isAuthenticated && (
             <>
               <AddProductButton />
-              <ProfileButton />
+              {/* <ProfileButton /> */}
               <LogoutButton />
             </>
           )}

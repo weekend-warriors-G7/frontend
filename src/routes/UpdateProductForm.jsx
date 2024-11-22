@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import axiosInstance from "../axiosInstance";
 
-const AddProductForm = () => {
+const UpdateProductForm = () => {
   const [formData, setFormData] = useState({
     name: "",
     price: "",
@@ -17,7 +17,37 @@ const AddProductForm = () => {
   const [imageFile, setImageFile] = useState(null);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      setLoading(true);
+      try {
+        const response = await axiosInstance.get(
+          `http://localhost:8080/products/${id}`
+        );
+        const productData = response.data;
+        setFormData({
+          name: productData.name,
+          price: productData.price,
+          description: productData.description,
+          size: productData.size,
+          clothingType: productData.clothingType,
+          material: productData.material,
+          colour: productData.colour,
+        });
+      } catch (error) {
+        setError("Failed to load product data");
+        console.error("Error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,30 +65,16 @@ const AddProductForm = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!imageFile) {
-      newErrors.image = "Image is required.";
-    }
-    if (!formData.name.trim()) {
-      newErrors.name = "Product name is required.";
-    }
-    if (!formData.price || formData.price < 0) {
+    if (!formData.name.trim()) newErrors.name = "Name is required.";
+    if (!formData.price || formData.price < 0)
       newErrors.price = "Price is required and cannot be less than 0.";
-    }
-    if (!formData.description.trim()) {
+    if (!formData.description.trim())
       newErrors.description = "Description is required.";
-    }
-    if (!formData.size.trim()) {
-      newErrors.size = "Size is required.";
-    }
-    if (!formData.clothingType.trim()) {
+    if (!formData.size.trim()) newErrors.size = "Size is required.";
+    if (!formData.clothingType.trim())
       newErrors.clothingType = "Clothing type is required.";
-    }
-    if (!formData.material.trim()) {
-      newErrors.material = "Material is required.";
-    }
-    if (!formData.colour.trim()) {
-      newErrors.colour = "Colour is required.";
-    }
+    if (!formData.material.trim()) newErrors.material = "Material is required.";
+    if (!formData.colour.trim()) newErrors.colour = "Colour is required.";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -73,7 +89,9 @@ const AddProductForm = () => {
 
     try {
       const formDataToSend = new FormData();
-      formDataToSend.append("image", imageFile);
+      if (imageFile) {
+        formDataToSend.append("image", imageFile);
+      }
       formDataToSend.append(
         "product",
         JSON.stringify({
@@ -87,8 +105,8 @@ const AddProductForm = () => {
         })
       );
 
-      const response = await axiosInstance.post(
-        "/products/add",
+      const response = await axiosInstance.put(
+        `/products/${id}/update`,
         formDataToSend,
         {
           headers: {
@@ -101,6 +119,7 @@ const AddProductForm = () => {
         navigate("/products");
       }
     } catch (error) {
+      setError("Failed to update product");
       console.error("Error:", error);
     } finally {
       setLoading(false);
@@ -114,7 +133,7 @@ const AddProductForm = () => {
       ) : (
         <div className="w-full max-w-md p-6 space-y-6 bg-white rounded-lg shadow-md">
           <h2 className="text-2xl font-qbold text-center text-black">
-            Add Product
+            Edit Product
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
@@ -274,11 +293,12 @@ const AddProductForm = () => {
                 <div className="text-red-500 text-sm mt-1">{errors.colour}</div>
               )}
             </div>
+            {error && <div className="text-red-500 text-sm">{error}</div>}
             <button
               type="submit"
               className="w-full px-4 py-2 font-qbold text-white bg-accentColour rounded-md hover:bg-linkColour"
             >
-              Add Product
+              Update Product
             </button>
           </form>
         </div>
@@ -287,4 +307,4 @@ const AddProductForm = () => {
   );
 };
 
-export default AddProductForm;
+export default UpdateProductForm;
