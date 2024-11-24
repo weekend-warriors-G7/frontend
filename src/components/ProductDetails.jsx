@@ -34,7 +34,7 @@ const ProductDashboard = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-bgColour">
+    <div className="flex items-center justify-center bg-bgColour">
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md mt-8 mb-8">
         <h2 className="text-2xl font-bold text-center text-black">
           {product.name}
@@ -99,6 +99,7 @@ const ProductDashboard = () => {
         >
           Edit Product
         </button>
+        
       </div>
     </div>
   );

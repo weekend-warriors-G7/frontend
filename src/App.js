@@ -3,9 +3,8 @@ import "./App.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import RegisterForm from "./routes/authentify/RegisterForm";
 import LoginForm from "./routes/authentify/LoginForm";
-import HeaderTest from "./components/HeaderTest";
-import ProductDashboard from "./routes/ProductDashboard";
-// import ProfileDashboard from "./routes/ProfileDashboard";
+import Header from "./components/Header";
+import ProductPage from "./routes/ProductPage";
 import ProductList from "./routes/ProductList";
 import AddProductForm from "./routes/AddProductForm";
 import { AuthProvider } from "./context/AuthContext";
@@ -30,7 +29,7 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <HeaderTest />
+        <Header />
         <div className="mt-24">
           <Routes>
             {/* Redirect from root path */}
@@ -38,7 +37,7 @@ function App() {
             <Route path="register" element={<RegisterForm />} />
             <Route path="login" element={<LoginForm />} />
             <Route path="products/add" element={<AddProductForm />} />
-            <Route path="products/:id" element={<ProductDashboard />} />
+            <Route path="products/:id" element={<ProductPage />} />
             <Route path="products" element={<ProductList />} />
             <Route path="/update-product/:id" element={<UpdateProductForm />} />
             {/* <Route path="profile" element={<ProfileDashboard />} /> */}
