@@ -22,7 +22,7 @@ const ProductList = () => {
                     <Link
                         key={product.id}
                         to={`/products/${product.id}`}
-                        className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center hover:shadow-lg transition-shadow"
+                        className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center hover:shadow-lg transition-shadow justify-between"
                     >
                         <h2 className="text-2xl font-bold text-center text-black">{product.name}</h2>
                         <div className="product-image h-48 overflow-hidden items-center">
