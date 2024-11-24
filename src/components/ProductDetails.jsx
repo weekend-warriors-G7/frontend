@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import Product from "../domain/Product";
 import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../axiosInstance";
-import SimilarProductsCarousel from "./SimilarProductsCarousel";
 
 const ProductDashboard = () => {
   const { id } = useParams(); // Get the product ID from the URL
