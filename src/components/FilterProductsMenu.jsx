@@ -112,7 +112,7 @@ const FilterProductsMenu = ({ onApplyFilters, onCancel }) => {
                 </div>
             </div>
             <div className="flex justify-end mt-4">
-                <button type="button" onClick={onCancel} className="mr-2 bg-gray-400 text-white px-4 py-2 rounded hover:bg-linkColour">Cancel</button>
+                <button type="button" onClick={onCancel} className="mr-2 bg-gray-400 text-white px-4 py-2 rounded hover:bg-linkColour">Clear Filters</button>
                 <button type="submit" className="bg-accentColour text-white px-4 py-2 rounded hover:bg-linkColour">Apply</button>
             </div>
         </form>
