@@ -7,7 +7,8 @@ import axios from "axios";
 
 const RegisterForm = () => {
     const [formData, setFormData] = useState({
-        username: "",
+        firstName: "",
+        lastName: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -20,6 +21,8 @@ const RegisterForm = () => {
         numberPassword: "",
         symbolPassword: "",
         emailError: "",
+        firstNameError: "",
+        lastNameError: ""
     });
 
     const [loading, setLoading] = useState(false);
@@ -128,14 +131,14 @@ const RegisterForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (errors.confirmPassword || errors.capitalLetter || errors.passwordLength || errors.numberPassword || errors.symbolPassword) {
+        if (errors.confirmPassword || errors.capitalLetter || errors.passwordLength || errors.numberPassword || errors.symbolPassword || errors.firstNameError|| errors.lastNameError) {
             return;
         }
 
         setLoading(true);
 
         try {
-            const dataToSend = {email: formData.email, password: formData.password};
+            const dataToSend = {email: formData.email, password: formData.password, firstName: formData.firstName, lastName: formData.lastName};
             const response = await axios.post('http://localhost:8080/api/v1/auth/register', dataToSend);
             if (response.status === 201) {
                 navigate("/login");
@@ -165,6 +168,42 @@ const RegisterForm = () => {
             <div className="w-full max-w-md p-6 space-y-6 bg-white rounded-lg shadow-md">
                 <h2 className="text-2xl font-qbold text-center text-black">Register</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                        <label htmlFor="fistName" className="block text-sm font-qregular text-black">
+                            First Name
+                        </label>
+                        <input
+                            type="firstName"
+                            id="firstName"
+                            name="firstName"
+                            value={formData.firstName}
+                            onChange={handleChange}
+                            required
+                            className="w-full px-4 py-2 mt-2 border border-elemColour rounded-md focus:outline-none focus:ring-2 focus:ring-linkColour"
+                        />
+                        {errors.firstNameError && (
+                            <p className="mt-1 text-sm text-red-500">{errors.firstNameError}</p>
+                        )}
+                    </div>
+
+                    <div>
+                        <label htmlFor="lastName" className="block text-sm font-qregular text-black">
+                            Last Name
+                        </label>
+                        <input
+                            type="lastName"
+                            id="lastName"
+                            name="lastName"
+                            value={formData.lastName}
+                            onChange={handleChange}
+                            required
+                            className="w-full px-4 py-2 mt-2 border border-elemColour rounded-md focus:outline-none focus:ring-2 focus:ring-linkColour"
+                        />
+                        {errors.lastNameError && (
+                            <p className="mt-1 text-sm text-red-500">{errors.lastNameError}</p>
+                        )}
+                    </div>
+
                     <div>
                         <label htmlFor="email" className="block text-sm font-qregular text-black">
                             Email
