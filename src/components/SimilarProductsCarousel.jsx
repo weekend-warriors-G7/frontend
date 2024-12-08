@@ -12,7 +12,9 @@ const SimilarProductsCarousel = () => {
   useEffect(() => {
     // Fetch the list of similar products
     axiosInstance
-      .get("http://localhost:8080/products/all")
+      .get("http://localhost:8080/products",
+       { params: {}}
+      )
       .then((response) => {
         setProductList(response.data);
         setLoading(false);

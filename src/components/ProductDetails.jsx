@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Product from "../domain/Product";
 import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../axiosInstance";
+import Spinner from "./Spinner";
 
 const ProductDashboard = () => {
   const { id } = useParams(); // Get the product ID from the URL
@@ -26,7 +27,7 @@ const ProductDashboard = () => {
       });
   }, [id]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Spinner />
   if (error) return <p>{error}</p>;
 
   const handleEditProduct = () => {
