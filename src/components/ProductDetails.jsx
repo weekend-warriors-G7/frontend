@@ -25,8 +25,6 @@ const ProductDashboard = ({ product, id }) => {
         const fetchedUserId = await fetchUserId();
         setRole(fetchedRole);
         setUserId(fetchedUserId);
-        console.log(fetchedUserId,product.owner_id
-        )
       } catch (error) {
         console.error("Error fetching user role:", error);
         setRole("Unknown");
@@ -34,7 +32,7 @@ const ProductDashboard = ({ product, id }) => {
     };
     if (isAuthenticated)
       getUserRole();
-  }, [userId,userRole]);
+  }, [userId,userRole,isAuthenticated]);
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
@@ -178,6 +176,7 @@ const ProductDashboard = ({ product, id }) => {
               )
               )}
               {(product.owner_id === userId || userRole === "ADMIN") && ( 
+                <div>
               <button
                 type="button"
                 onClick={handleEditProduct}
@@ -185,8 +184,6 @@ const ProductDashboard = ({ product, id }) => {
               >
                 Edit Product
               </button>
-              )}
-
               <button
           type="button"
           onClick={() => setShowDeleteConfirm(true)}
@@ -194,6 +191,10 @@ const ProductDashboard = ({ product, id }) => {
         >
           Delete Product
         </button>
+              </div>
+              )}
+
+              
 
         {/* Delete Confirmation Dialog */}
         {showDeleteConfirm && (
