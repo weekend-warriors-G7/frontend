@@ -30,7 +30,7 @@ const ProductList = () => {
         const response = await axiosInstance.get(
           "http://localhost:8080/products",
           {
-            params: { ...filters, searchQuery }, // Pass filters and search query
+            params: { ...filters, searchQuery,status: "APROVED" }, // Pass filters and search query
           }
         );
         if (response.data.length === 0) {
@@ -68,7 +68,9 @@ const ProductList = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-bgColour flex-col">
-      <div className="product-list flex items-center justify-center min-h-screen bg-bgColour flex-col">
+      <div className="product-list flex items-center min-h-screen bg-bgColour flex-col">
+        {error && <div className="text-red-500">{error}</div>}
+
         {isLoading ? (
           <div className="flex items-center justify-center min-h-screen">
             <Spinner />

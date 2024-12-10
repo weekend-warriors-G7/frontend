@@ -102,6 +102,7 @@ const UpdateProductForm = () => {
           clothingType: formData.clothingType,
           material: formData.material,
           colour: formData.colour,
+          status: "PENDING"
         })
       );
 
