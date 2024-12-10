@@ -23,7 +23,6 @@ const FilterProductsMenu = ({ onApplyFilters, onCancel }) => {
     const validateFilters = () => {
         const validationErrors = {};
 
-        // Validate starting and ending price
         if (filters.startingPrice) {
             const startingPrice = parseFloat(filters.startingPrice);
             if (isNaN(startingPrice)) {
@@ -42,7 +41,6 @@ const FilterProductsMenu = ({ onApplyFilters, onCancel }) => {
             }
         }
 
-        // Validate price range
         if (
             filters.startingPrice &&
             filters.endingPrice &&
@@ -68,7 +66,6 @@ const FilterProductsMenu = ({ onApplyFilters, onCancel }) => {
 
     return (
         <form onSubmit={handleSubmit} className="bg-white p-4 rounded shadow-md mb-4 w-200">
-            {/* Error Message Container */}
             {Object.keys(errors).length > 0 && (
                 <div className="bg-red-100 text-red-600 p-3 rounded mb-4">
                     <ul className="list-disc ml-5">
