@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../axiosInstance";
 import { useSearch } from "../context/SearchContext";
+import {useFilters} from "../context/FilterContext";
 import ProductCard from "../components/ProductCard";
 import Spinner from "../components/Spinner";
 import FilterProductsButton from "../components/FilterProductsButton"; // Assuming you have this component
@@ -12,7 +13,9 @@ const ProductList = () => {
   const [productList, setProductList] = useState([]);
   const [originalProductList, setOriginalProductList] = useState([]);
   const [showFilter, setShowFilter] = useState(false);
-  const [filters, setFilters] = useState({});
+  //const [filters, setFilters] = useState({});
+  const { filters, applyFilters, clearFilters } = useFilters();
+
   const { searchQuery } = useSearch(); // Access the search query from context
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -21,6 +24,8 @@ const ProductList = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       setIsLoading(true);
+      setError(null);
+
       try {
         const response = await axiosInstance.get(
           "http://localhost:8080/products",
@@ -28,9 +33,12 @@ const ProductList = () => {
             params: { ...filters, searchQuery }, // Pass filters and search query
           }
         );
-        setProductList(response.data);
-        setOriginalProductList(response.data);
-        setError(null);
+        if (response.data.length === 0) {
+          setError("No products match your filters.");
+        } else {
+          setProductList(response.data);
+          setOriginalProductList(response.data);
+        }
       } catch (err) {
         setError("Failed to load products. Please try again later.");
       } finally {
@@ -58,22 +66,9 @@ const ProductList = () => {
     setProductList([...originalProductList]);
   };
 
-  // Handlers for filters
-  const handleApplyFilters = (newFilters) => {
-    setFilters(newFilters);
-    setShowFilter(false);
-  };
-
-  const handleClearFilters = () => {
-    setFilters({});
-    setShowFilter(false);
-  };
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-bgColour flex-col">
       <div className="product-list flex items-center justify-center min-h-screen bg-bgColour flex-col">
-        {error && <div className="text-red-500">{error}</div>}
-
         {isLoading ? (
           <div className="flex items-center justify-center min-h-screen">
             <Spinner />
@@ -93,21 +88,31 @@ const ProductList = () => {
 
               <div className="mt-4">
                 {showFilter && (
-                  <FilterProductMenu
-                    onApplyFilters={handleApplyFilters}
-                    onCancel={handleClearFilters}
-                  />
+                    <FilterProductMenu
+                        onApplyFilters={(newFilters) => {
+                          applyFilters(newFilters);
+                          setShowFilter(false);
+                        }}
+                        onCancel={() => {
+                          clearFilters();
+                          setShowFilter(false);
+                        }}
+                    />
                 )}
               </div>
               {Object.keys(filters).length > 0 && (
                 <ActiveFilters filters={filters} />
               )}
             </div>
-            <div className="w-full grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-              {productList.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
+            {error ? (
+                    <div className="bg-red-100 text-red-600 p-3 flex justify-center items-center rounded mb-4 min-w-full"> {error}
+                    </div>
+                ) : (
+                    <div className="w-full grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                    {productList.map((product) => (
+                        <ProductCard key={product.id} product={product} />
+                    ))}
+                </div>)}
           </>
         )}
       </div>
