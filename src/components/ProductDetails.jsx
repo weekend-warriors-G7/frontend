@@ -4,6 +4,7 @@ import Product from "../domain/Product";
 import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../axiosInstance";
 import Spinner from "./Spinner";
+import DeleteProduct from "../routes/deleteProducts";
 
 const ProductDashboard = () => {
   const { id } = useParams(); // Get the product ID from the URL
@@ -12,6 +13,7 @@ const ProductDashboard = () => {
   const [error, setError] = useState(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const navigate = useNavigate();
+  const deleteProduct = DeleteProduct(id);
 
   useEffect(() => {
     // Fetch the product data based on the ID from the URL
@@ -30,17 +32,6 @@ const ProductDashboard = () => {
 
   const handleEditProduct = () => {
     navigate(`/update-product/${id}`);
-  };
-
-  const handleDeleteProduct = async () => {
-    try {
-      await axiosInstance.delete(`http://localhost:8080/products/${id}/delete`);
-      alert("Product deleted successfully.");
-      navigate("/products");
-    } catch (err) {
-      console.error("Error deleting product:", err);
-      alert("Failed to delete the product. Please try again.");
-    }
   };
 
   if (loading) return <Spinner />;
@@ -135,7 +126,7 @@ const ProductDashboard = () => {
                   No
                 </button>
                 <button
-                  onClick={handleDeleteProduct}
+                  onClick={deleteProduct}
                   className="px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600"
                 >
                   Yes
