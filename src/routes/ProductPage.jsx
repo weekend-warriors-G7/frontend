@@ -15,6 +15,7 @@ const ProductPage = () => {
     axiosInstance
       .get(`http://localhost:8080/products/${id}`)
       .then((response) => {
+   
         setProduct(response.data);
         setLoading(false);
       })

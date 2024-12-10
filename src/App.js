@@ -9,6 +9,7 @@ import ProductList from "./routes/ProductList";
 import AddProductForm from "./routes/AddProductForm";
 import { AuthProvider } from "./context/AuthContext";
 import { SearchProvider } from "./context/SearchContext"; // Import SearchProvider
+import { FilterProvider } from "./context/FilterContext";
 import UpdateProductForm from "./routes/UpdateProductForm";
 import AdminDashboard from "./routes/AdminDashboard";
 import UserProducts from "./components/UserProducts";
@@ -31,7 +32,8 @@ function HomeRedirect() {
 function App() {
   return (
     <AuthProvider>
-      <SearchProvider> {/* Wrap the application in SearchProvider */}
+      <SearchProvider> 
+        <FilterProvider>
         <BrowserRouter>
           <Header />
           <div className="mt-24">
@@ -50,6 +52,7 @@ function App() {
             </Routes>
           </div>
         </BrowserRouter>
+        </FilterProvider>
       </SearchProvider>
     </AuthProvider>
   );

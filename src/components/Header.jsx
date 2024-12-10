@@ -37,12 +37,10 @@ const Header = () => {
     };
     if(isAuthenticated)
       getUserRole();
-  }, []);
+  }, [role]);
 
    // Redirect to login if not authenticated
-   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
+ 
 
   return (
     <header className="fixed top-0 left-0 w-full bg-elemColour text-white z-10 p-4 flex justify-between items-center">
@@ -52,6 +50,8 @@ const Header = () => {
       >
         Handmade Shop
       </h1>
+      {isAuthenticated && (
+          <>
       <div className="relative flex items-center">
         <input
           type="text"
@@ -64,8 +64,7 @@ const Header = () => {
         <FaSearch className="absolute left-3 text-gray-400" />
       </div>
       <nav className="flex items-center space-x-4">
-        {isAuthenticated && (
-          <>
+        
            {role ==="ADMIN" && (
               <button
                 className="bg-accentColour text-white px-4 py-2 rounded hover:bg-accentColourHover transition"
@@ -77,9 +76,11 @@ const Header = () => {
             <AddProductButton />
             <UserProductsButton />
             <LogoutButton />
-          </>
-        )}
+          
+        
       </nav>
+      </>
+      )}
     </header>
   );
 };

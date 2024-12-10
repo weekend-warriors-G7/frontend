@@ -4,21 +4,29 @@ import Product from "../domain/Product";
 import { useNavigate, Navigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext"; // Import AuthContext
-import { fetchUserRole } from "../utils/user";
+import { fetchUserId, fetchUserRole } from "../utils/user";
 import axiosInstance from "../axiosInstance";
 import Spinner from "../components/Spinner";
+import DeleteProduct from "../routes/deleteProducts";
 const ProductDashboard = ({ product, id }) => {
   const navigate = useNavigate();
   const [userRole, setRole] = useState("");
+  const [userId, setUserId] = useState("");
   const { isAuthenticated } = useContext(AuthContext); // Access auth state
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const deleteProduct = DeleteProduct(id);
 
   useEffect(() => {
     const getUserRole = async () => {
       try {
         const fetchedRole = await fetchUserRole();
+        const fetchedUserId = await fetchUserId();
         setRole(fetchedRole);
+        setUserId(fetchedUserId);
+        console.log(fetchedUserId,product.owner_id
+        )
       } catch (error) {
         console.error("Error fetching user role:", error);
         setRole("Unknown");
@@ -26,15 +34,13 @@ const ProductDashboard = ({ product, id }) => {
     };
     if (isAuthenticated)
       getUserRole();
-  }, []);
+  }, [userId,userRole]);
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
-  if (userRole === "USER" && product.status === "PENDING") {
-    return <Navigate to="/products" replace />
-  }
+
 
   const handleStatusUpdate = async (status) => {
     try {
@@ -171,7 +177,7 @@ const ProductDashboard = ({ product, id }) => {
                 </div>
               )
               )}
-
+              {(product.owner_id === userId || userRole === "ADMIN") && ( 
               <button
                 type="button"
                 onClick={handleEditProduct}
@@ -179,6 +185,40 @@ const ProductDashboard = ({ product, id }) => {
               >
                 Edit Product
               </button>
+              )}
+
+              <button
+          type="button"
+          onClick={() => setShowDeleteConfirm(true)}
+          className="w-full px-4 py-2 mt-4 font-bold text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none"
+        >
+          Delete Product
+        </button>
+
+        {/* Delete Confirmation Dialog */}
+        {showDeleteConfirm && (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+            <div className="bg-white p-6 rounded shadow-lg">
+              <p className="text-black text-center">
+                Are you sure you want to delete this product?
+              </p>
+              <div className="flex justify-around mt-4">
+                <button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  className="px-4 py-2 text-white bg-gray-500 rounded-md hover:bg-gray-600"
+                >
+                  No
+                </button>
+                <button
+                  onClick={deleteProduct}
+                  className="px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600"
+                >
+                  Yes
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
             </div>
           </div>

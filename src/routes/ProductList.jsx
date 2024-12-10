@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../axiosInstance";
 import { useSearch } from "../context/SearchContext";
+import {useFilters} from "../context/FilterContext";
 import ProductCard from "../components/ProductCard";
 import Spinner from "../components/Spinner";
 import FilterProductsButton from "../components/FilterProductsButton"; // Assuming you have this component
 import FilterProductMenu from "../components/FilterProductsMenu"; // Assuming you have this component
 import ActiveFilters from "../components/ActiveFilters"; // Assuming you have this component
+import SortProductsMenu from "../components/SortProductsMenu";
 
 const ProductList = () => {
   const [productList, setProductList] = useState([]);
+  const [originalProductList, setOriginalProductList] = useState([]);
   const [showFilter, setShowFilter] = useState(false);
-  const [filters, setFilters] = useState({});
+  //const [filters, setFilters] = useState({});
+  const { filters, applyFilters, clearFilters } = useFilters();
+
   const { searchQuery } = useSearch(); // Access the search query from context
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -19,12 +24,21 @@ const ProductList = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       setIsLoading(true);
+      setError(null);
+
       try {
-        const response = await axiosInstance.get("http://localhost:8080/products", {
-          params: { ...filters, searchQuery,status: "APROVED" }, // Pass filters and search query
-        });
-        setProductList(response.data);
-        setError(null);
+        const response = await axiosInstance.get(
+          "http://localhost:8080/products",
+          {
+            params: { ...filters, searchQuery,status: "APROVED" }, // Pass filters and search query
+          }
+        );
+        if (response.data.length === 0) {
+          setError("No products match your filters.");
+        } else {
+          setProductList(response.data);
+          setOriginalProductList(response.data);
+        }
       } catch (err) {
         setError("Failed to load products. Please try again later.");
       } finally {
@@ -35,15 +49,21 @@ const ProductList = () => {
     fetchProducts();
   }, [searchQuery, filters]); // Re-fetch when search query or filters change
 
-  // Handlers for filters
-  const handleApplyFilters = (newFilters) => {
-    setFilters(newFilters);
-    setShowFilter(false);
+  // Handlers for sorting
+  const handleSort = (order) => {
+    const sorted = [...productList].sort((a, b) => {
+      if (order === "low-to-high") {
+        return a.price - b.price;
+      } else if (order === "high-to-low") {
+        return b.price - a.price;
+      }
+      return 0;
+    });
+    setProductList(sorted);
   };
 
-  const handleClearFilters = () => {
-    setFilters({});
-    setShowFilter(false);
+  const handleClearSort = () => {
+    setProductList([...originalProductList]);
   };
 
   return (
@@ -59,27 +79,45 @@ const ProductList = () => {
           <>
             <div className="w-full mb-1">
               <div className="flex justify-between items-center">
-                <FilterProductsButton onToggleFilter={() => setShowFilter(!showFilter)} />
+                <FilterProductsButton
+                  onToggleFilter={() => setShowFilter(!showFilter)}
+                />
+                <SortProductsMenu
+                  onSort={handleSort}
+                  onClearSort={handleClearSort}
+                />
               </div>
 
               <div className="mt-4">
                 {showFilter && (
-                  <FilterProductMenu
-                    onApplyFilters={handleApplyFilters}
-                    onCancel={handleClearFilters}
-                  />
+                    <FilterProductMenu
+                        onApplyFilters={(newFilters) => {
+                          applyFilters(newFilters);
+                          setShowFilter(false);
+                        }}
+                        onCancel={() => {
+                          clearFilters();
+                          setShowFilter(false);
+                        }}
+                    />
                 )}
               </div>
-            {Object.keys(filters).length > 0 && <ActiveFilters filters={filters} />}
+              {Object.keys(filters).length > 0 && (
+                <ActiveFilters filters={filters} />
+              )}
             </div>
-            <div className="w-full grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-              {productList.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
+            {error ? (
+                    <div className="bg-red-100 text-red-600 p-3 flex justify-center items-center rounded mb-4 min-w-full"> {error}
+                    </div>
+                ) : (
+                    <div className="w-full grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                    {productList.map((product) => (
+                        <ProductCard key={product.id} product={product} />
+                    ))}
+                </div>)}
           </>
         )}
-        </div>
+      </div>
     </div>
   );
 };
