@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import axiosInstance from "../axiosInstance";
+import Spinner from "./Spinner";
 
 function UserProducts() {
   const [approvedProducts, setApprovedProducts] = useState([]);
@@ -28,9 +29,7 @@ function UserProducts() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-gray-50">
-        <div className="spinner border-t-4 border-blue-500 w-12 h-12 rounded-full animate-spin"></div>
-      </div>
+      <Spinner />
     );
   }
 

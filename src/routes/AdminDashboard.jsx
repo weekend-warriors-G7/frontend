@@ -31,6 +31,7 @@ const AdminDashboard = () => {
         const fetchedRole = await fetchUserRole();
       
         if (fetchedRole !== "ADMIN") {
+            
           navigate("/"); // Redirect to an unauthorized page or home page
         } else {
           fetchProducts();
@@ -38,7 +39,7 @@ const AdminDashboard = () => {
       };
 
       checkUserRole();
-  }, []); // Re-fetch when search query or filters change
+  }, [navigate]); // Re-fetch when search query or filters change
 
   
   return (
