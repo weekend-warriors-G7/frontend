@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSearch } from "../context/SearchContext";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa"; // Add React Icons
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext"; // Import AuthContext
@@ -37,7 +37,7 @@ const Header = () => {
     };
     if(isAuthenticated)
       getUserRole();
-  }, [role]);
+  }, [role,isAuthenticated]);
 
    // Redirect to login if not authenticated
  

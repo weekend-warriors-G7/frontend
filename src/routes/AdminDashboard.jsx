@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../axiosInstance";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import Spinner from "../components/Spinner";
 import { fetchUserRole } from "../utils/user";
