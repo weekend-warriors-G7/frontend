@@ -1,6 +1,7 @@
 class Product {
-    constructor(id, image, name, price, description, size, clothingType, material, colour) {
+    constructor(id,owner_id, image, name, price, description, size, clothingType, material, colour,status) {
         this._id = id;
+        this.owner_id = owner_id;
         this._image = image;
         this._name = name;
         this._price = price;
@@ -9,6 +10,7 @@ class Product {
         this._clothingType = clothingType;
         this._material = material;
         this._colour = colour;
+        this.status = status;
     }
 
     // Getters

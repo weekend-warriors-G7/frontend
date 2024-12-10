@@ -1,18 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSearch } from "../context/SearchContext";
 import { useNavigate, Navigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa"; // Add React Icons
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext"; // Import AuthContext
 import AddProductButton from "./AddProductButton"; // Import AddProductButton
+import UserProductsButton from "./UserProductsButton"
 import LogoutButton from "./LogoutButton"; // Import LogoutButton
-
+import { fetchUserRole } from "../utils/user";
 const Header = () => {
   const { isAuthenticated } = useContext(AuthContext); // Access auth state
   const { setSearchQuery } = useSearch(); // Access search context to update the query
   const [inputValue, setInputValue] = useState(""); // Local state for the input value
   const navigate = useNavigate();
-
+  const [role, setRole] = useState("");
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       setSearchQuery(inputValue); // Update global search query
@@ -20,8 +21,26 @@ const Header = () => {
     }
   };
 
-  // Redirect to login if not authenticated
-  if (!isAuthenticated) {
+
+
+
+
+  useEffect(() => {
+    const getUserRole = async () => {
+      try {
+        const fetchedRole = await fetchUserRole();
+        setRole(fetchedRole);
+      } catch (error) {
+        console.error("Error fetching user role:", error);
+        setRole("Unknown");
+      }
+    };
+    if(isAuthenticated)
+      getUserRole();
+  }, []);
+
+   // Redirect to login if not authenticated
+   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
@@ -47,8 +66,16 @@ const Header = () => {
       <nav className="flex items-center space-x-4">
         {isAuthenticated && (
           <>
+           {role ==="ADMIN" && (
+              <button
+                className="bg-accentColour text-white px-4 py-2 rounded hover:bg-accentColourHover transition"
+                onClick={() => navigate("/dashboard")}
+              >
+                Dashboard
+              </button>
+            )}
             <AddProductButton />
-            {/* Add other components like ProfileButton */}
+            <UserProductsButton />
             <LogoutButton />
           </>
         )}
