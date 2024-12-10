@@ -9,6 +9,7 @@ import ProductList from "./routes/ProductList";
 import AddProductForm from "./routes/AddProductForm";
 import { AuthProvider } from "./context/AuthContext";
 import { SearchProvider } from "./context/SearchContext"; // Import SearchProvider
+import { FilterProvider } from "./context/FilterContext";
 import UpdateProductForm from "./routes/UpdateProductForm";
 
 // Function to check if the user is authenticated
@@ -30,22 +31,24 @@ function App() {
   return (
     <AuthProvider>
       <SearchProvider> {/* Wrap the application in SearchProvider */}
-        <BrowserRouter>
-          <Header />
-          <div className="mt-24">
-            <Routes>
-              {/* Redirect from root path */}
-              <Route path="/" element={<HomeRedirect />} />
-              <Route path="register" element={<RegisterForm />} />
-              <Route path="login" element={<LoginForm />} />
-              <Route path="products/add" element={<AddProductForm />} />
-              <Route path="products/:id" element={<ProductPage />} />
-              <Route path="products" element={<ProductList />} />
-              <Route path="/update-product/:id" element={<UpdateProductForm />} />
-              {/* <Route path="profile" element={<ProfileDashboard />} /> */}
-            </Routes>
-          </div>
-        </BrowserRouter>
+        <FilterProvider>
+          <BrowserRouter>
+            <Header />
+            <div className="mt-24">
+              <Routes>
+                {/* Redirect from root path */}
+                <Route path="/" element={<HomeRedirect />} />
+                <Route path="register" element={<RegisterForm />} />
+                <Route path="login" element={<LoginForm />} />
+                <Route path="products/add" element={<AddProductForm />} />
+                <Route path="products/:id" element={<ProductPage />} />
+                <Route path="products" element={<ProductList />} />
+                <Route path="/update-product/:id" element={<UpdateProductForm />} />
+                {/* <Route path="profile" element={<ProfileDashboard />} /> */}
+              </Routes>
+            </div>
+          </BrowserRouter>
+        </FilterProvider>
       </SearchProvider>
     </AuthProvider>
   );
