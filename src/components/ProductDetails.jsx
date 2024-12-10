@@ -4,13 +4,16 @@ import Product from "../domain/Product";
 import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../axiosInstance";
 import Spinner from "./Spinner";
+import DeleteProduct from "../routes/deleteProducts";
 
 const ProductDashboard = () => {
   const { id } = useParams(); // Get the product ID from the URL
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const navigate = useNavigate();
+  const deleteProduct = DeleteProduct(id);
 
   useEffect(() => {
     // Fetch the product data based on the ID from the URL
@@ -27,12 +30,12 @@ const ProductDashboard = () => {
       });
   }, [id]);
 
-  if (loading) return <Spinner />
-  if (error) return <p>{error}</p>;
-
   const handleEditProduct = () => {
     navigate(`/update-product/${id}`);
   };
+
+  if (loading) return <Spinner />;
+  if (error) return <p>{error}</p>;
 
   return (
     <div className="flex items-center justify-center bg-bgColour">
@@ -100,7 +103,38 @@ const ProductDashboard = () => {
         >
           Edit Product
         </button>
-        
+        <button
+          type="button"
+          onClick={() => setShowDeleteConfirm(true)}
+          className="w-full px-4 py-2 mt-4 font-bold text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none"
+        >
+          Delete Product
+        </button>
+
+        {/* Delete Confirmation Dialog */}
+        {showDeleteConfirm && (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+            <div className="bg-white p-6 rounded shadow-lg">
+              <p className="text-black text-center">
+                Are you sure you want to delete this product?
+              </p>
+              <div className="flex justify-around mt-4">
+                <button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  className="px-4 py-2 text-white bg-gray-500 rounded-md hover:bg-gray-600"
+                >
+                  No
+                </button>
+                <button
+                  onClick={deleteProduct}
+                  className="px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600"
+                >
+                  Yes
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
