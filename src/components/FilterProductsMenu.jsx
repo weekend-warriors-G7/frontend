@@ -42,7 +42,7 @@ const FilterProductsMenu = ({ onApplyFilters, onCancel }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="bg-white p-4 rounded shadow-md mb-4">
+        <form onSubmit={handleSubmit} className="bg-white p-4 rounded shadow-md mb-4 w-200">
             <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col">
                     <label htmlFor="startingPrice" className="mb-2 font-semibold">Starting Price</label>

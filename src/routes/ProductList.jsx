@@ -47,38 +47,39 @@ const ProductList = () => {
   };
 
   return (
-    <div className="p-4">
-      {error && <div className="text-red-500">{error}</div>}
+    <div className="flex items-center justify-center min-h-screen bg-bgColour flex-col">
+      <div className="product-list flex items-center justify-center min-h-screen bg-bgColour flex-col">
+        {error && <div className="text-red-500">{error}</div>}
 
-      {isLoading ? (
-        <div className="flex items-center justify-center min-h-screen">
-          <Spinner />
-        </div>
-      ) : (
-        <>
-          <div className="mb-4 flex justify-between items-center">
-            <h2 className="text-3xl font-bold">Product List</h2>
-            <FilterProductsButton onToggleFilter={() => setShowFilter(!showFilter)} />
+        {isLoading ? (
+          <div className="flex items-center justify-center min-h-screen">
+            <Spinner />
           </div>
+        ) : (
+          <>
+            <div className="w-full mb-1">
+              <div className="flex justify-between items-center">
+                <FilterProductsButton onToggleFilter={() => setShowFilter(!showFilter)} />
+              </div>
 
-          {showFilter && (
-            <FilterProductMenu
-              onApplyFilters={handleApplyFilters}
-              onCancel={handleClearFilters}
-            />
-          )}
-
-          {Object.keys(filters).length > 0 && <ActiveFilters filters={filters} />}
-
-          <div className="flex items-center justify-center min-h-screen bg-bgColour">
-            <div className="w-full max-w-5xl p-8 grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="mt-4">
+                {showFilter && (
+                  <FilterProductMenu
+                    onApplyFilters={handleApplyFilters}
+                    onCancel={handleClearFilters}
+                  />
+                )}
+              </div>
+            {Object.keys(filters).length > 0 && <ActiveFilters filters={filters} />}
+            </div>
+            <div className="w-full grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
               {productList.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
-          </div>
-        </>
-      )}
+          </>
+        )}
+        </div>
     </div>
   );
 };

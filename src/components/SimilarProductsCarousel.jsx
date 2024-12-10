@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../axiosInstance";
 
 const SimilarProductsCarousel = () => {
@@ -8,11 +8,12 @@ const SimilarProductsCarousel = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const carouselRef = useRef(null);
+  const { id } = useParams();
 
   useEffect(() => {
     // Fetch the list of similar products
     axiosInstance
-      .get("http://localhost:8080/products",
+      .get(`http://localhost:8080/products/compare/${id}`,
        { params: {}}
       )
       .then((response) => {
@@ -24,7 +25,7 @@ const SimilarProductsCarousel = () => {
         setError("Could not load similar products");
         setLoading(false);
       });
-  }, []);
+  }, [id]);
 
   if (loading) return <p>Loading similar products...</p>;
   if (error) return <p>{error}</p>;

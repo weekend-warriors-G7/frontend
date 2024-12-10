@@ -46,3 +46,7 @@
     transform: rotate(360deg);
   }
 }
+
+.product-list {
+  width: 50%;
+}
