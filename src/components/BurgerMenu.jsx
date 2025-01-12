@@ -9,50 +9,54 @@ const BurgerMenu = ({ role, navigate }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="relative">
-      <button
-        onClick={() => setMenuOpen(!menuOpen)}
-        className="text-white text-3xl focus:outline-none"
-      >
-        {menuOpen ? <FaTimes /> : <FaBars />}
-      </button>
+    <div>
+      {!menuOpen && (
+        <button
+          onClick={() => setMenuOpen(true)}
+          className="text-white text-3xl fixed top-4 right-4 z-50 focus:outline-none"
+        >
+          <FaBars />
+        </button>
+      )}
 
-      <nav
-        className={`${
-          menuOpen ? "block" : "hidden"
-        } absolute top-[60px] right-0 bg-elemColour text-white p-6 rounded-md shadow-lg z-50 w-48`}
+      <div
+        className={`fixed top-0 right-0 h-full bg-elemColour text-white z-40 transition-transform duration-300 ${
+          menuOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+        style={{ width: "280px" }}
       >
-        <ul className="space-y-4">
+        <button
+          onClick={() => setMenuOpen(false)}
+          className="text-white text-3xl absolute top-4 right-4 focus:outline-none"
+        >
+          <FaTimes />
+        </button>
+
+        <nav className="flex flex-col items-start p-6 mt-16 space-y-6">
           {role === "ADMIN" && (
-            <li>
-              <button
-                onClick={() => {
-                  setMenuOpen(false);
-                  navigate("/dashboard");
-                }}
-                className="w-full px-4 py-2 text-left bg-accentColour rounded hover:bg-accentColourHover"
-              >
-                Dashboard
-              </button>
-            </li>
+            <button
+              onClick={() => {
+                setMenuOpen(false);
+                navigate("/dashboard");
+              }}
+              className="w-full px-4 py-2 text-left bg-accentColour rounded hover:bg-accentColourHover"
+            >
+              Dashboard
+            </button>
           )}
-          <li>
-            <AddProductButton />
-          </li>
-          <li>
-            <UserProductsButton />
-          </li>
-          {role === "USER" && (
-            <li>
-              <SubscriptionButton />
-            </li>
-          )}
-          <li>
-            {" "}
-            <LogoutButton />
-          </li>
-        </ul>
-      </nav>
+          <AddProductButton />
+          <UserProductsButton />
+          {role === "USER" && <SubscriptionButton />}
+          <LogoutButton />
+        </nav>
+      </div>
+
+      {menuOpen && (
+        <div
+          onClick={() => setMenuOpen(false)}
+          className="fixed inset-0 bg-black bg-opacity-50 z-30"
+        ></div>
+      )}
     </div>
   );
 };
