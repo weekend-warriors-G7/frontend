@@ -1,19 +1,22 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const SubscriptionButton = () => {
+const SubscriptionButton = ({ onClose }) => {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
+    if (onClose) {
+      onClose();
+    }
     navigate("/subscription");
   };
 
   return (
     <button
       onClick={handleNavigate}
-      className="w-full px-4 py-2 font-qregular text-white bg-accentColour rounded-md hover:bg-linkColour focus:outline-none focus:ring-linkColour"
+      className="w-full px-4 py-2 text-left bg-accentColour rounded hover:bg-accentColourHover"
     >
-      Subscription
+      Subscribe
     </button>
   );
 };

@@ -4,6 +4,7 @@ import UserProductsButton from "./UserProductsButton";
 import SubscriptionButton from "./SubscriptionButton";
 import AddProductButton from "./AddProductButton";
 import LogoutButton from "./LogoutButton";
+import DashboardButton from "./DashBoardButton";
 
 const BurgerMenu = ({ role, navigate }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -34,20 +35,17 @@ const BurgerMenu = ({ role, navigate }) => {
 
         <nav className="flex flex-col items-start p-6 mt-16 space-y-6">
           {role === "ADMIN" && (
-            <button
-              onClick={() => {
-                setMenuOpen(false);
-                navigate("/dashboard");
-              }}
-              className="w-full px-4 py-2 text-left bg-accentColour rounded hover:bg-accentColourHover"
-            >
-              Dashboard
-            </button>
+            <DashboardButton
+              navigate={navigate}
+              onClose={() => setMenuOpen(false)}
+            />
           )}
-          <AddProductButton />
-          <UserProductsButton />
-          {role === "USER" && <SubscriptionButton />}
-          <LogoutButton />
+          <AddProductButton onClose={() => setMenuOpen(false)} />
+          <UserProductsButton onClose={() => setMenuOpen(false)} />
+          {role === "USER" && (
+            <SubscriptionButton onClose={() => setMenuOpen(false)} />
+          )}
+          <LogoutButton onClose={() => setMenuOpen(false)} />
         </nav>
       </div>
 

@@ -1,21 +1,23 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const UserProductsButton = () => {
+const UserProductsButton = ({ onClose }) => {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
+    if (onClose) {
+      onClose();
+    }
     navigate("/myproducts/");
   };
+
   return (
-    <div>
-      <button
-        onClick={handleNavigate}
-        className="w-full px-4 py-2 font-qregular text-white bg-accentColour rounded-md hover:bg-linkColour focus:outline-none focus:ring-linkColour"
-      >
-        My Products
-      </button>
-    </div>
+    <button
+      onClick={handleNavigate}
+      className="w-full px-4 py-2 text-left bg-accentColour rounded hover:bg-accentColourHover"
+    >
+      My Products
+    </button>
   );
 };
 

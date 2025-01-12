@@ -1,9 +1,8 @@
-// src/components/LogoutButton.js
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext"; // Import AuthContext
 
-const LogoutButton = () => {
+const LogoutButton = ({ onClose }) => {
   const navigate = useNavigate();
   const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
 
@@ -12,21 +11,22 @@ const LogoutButton = () => {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
     setIsAuthenticated(false); // Update auth state
-    navigate('/login');
+    if (onClose) {
+      onClose();
+    }
+    navigate("/login");
   };
 
   return (
-    <div>
-      <button
-        onClick={handleLogout}
-        className="w-full px-4 py-2 font-qregular text-white bg-accentColour rounded-md hover:bg-linkColour focus:outline-none focus:ring-linkColour"
-      >
-        Logout
-      </button>
-    </div>
+    <button
+      onClick={handleLogout}
+      className="w-full px-4 py-2 text-left bg-accentColour rounded hover:bg-accentColourHover"
+    >
+      Logout
+    </button>
   );
 };
 
