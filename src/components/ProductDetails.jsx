@@ -38,6 +38,27 @@ const ProductDashboard = ({ product, id }) => {
     return <Navigate to="/login" replace />;
   }
 
+  const handleCheckout = async () => {
+    try {
+      const response = await axiosInstance.post(
+        `/checkout/create-session`,
+        { "productId":product.id },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+
+      const data = await response.data;
+      if (data.url) {
+        window.location.href=data.url; // Redirect to Stripe Checkout
+      }
+    } catch (error) {
+      console.error("Error redirecting to Stripe Checkout", error);
+    }
+  };
 
 
   const handleStatusUpdate = async (status) => {
@@ -152,9 +173,10 @@ const ProductDashboard = ({ product, id }) => {
               {product.status === "APROVED" ? (
                 <button
                   type="submit"
+                  onClick={handleCheckout}
                   className="w-full px-4 py-2 font-bold text-white bg-accentColour rounded-md hover:bg-linkColour focus:outline-none"
                 >
-                  Add to cart
+                  Purchase
                 </button>
               ) : (userRole === "ADMIN" && (
                 <div className="flex justify-between space-x-4">

@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import ProductPage from "./routes/ProductPage";
 import ProductList from "./routes/ProductList";
 import AddProductForm from "./routes/AddProductForm";
+import PaymentSuccessPage from "./routes/PaymentSuccessPage";
 import { AuthProvider } from "./context/AuthContext";
 import { SearchProvider } from "./context/SearchContext"; // Import SearchProvider
 import { FilterProvider } from "./context/FilterContext";
@@ -48,6 +49,7 @@ function App() {
               <Route path="dashboard" element={<AdminDashboard />} />
               <Route path="myproducts" element={<UserProducts />} />
               <Route path="/update-product/:id" element={<UpdateProductForm />} />
+              <Route path="/success/" element={<PaymentSuccessPage />} />
               {/* <Route path="profile" element={<ProfileDashboard />} /> */}
             </Routes>
           </div>
