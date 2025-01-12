@@ -3,8 +3,7 @@ import axiosInstance from "../axiosInstance";
 import { useNavigate } from "react-router-dom";
 
 const PaymentSuccessPage = () => {
-  const [paymentStatus, setPaymentStatus] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
+    
   const [hasAlerted, setHasAlerted] = useState(false);  // State to track if alert was shown
   const navigate = useNavigate();
 
@@ -16,7 +15,7 @@ const PaymentSuccessPage = () => {
         const sessionId = urlParams.get('session_id');
 
         if (!sessionId) {
-          setErrorMessage('Session ID not found.');
+          
           return;
         }
 
@@ -24,14 +23,14 @@ const PaymentSuccessPage = () => {
         const response = await axiosInstance.get(`/payments/verify-session/${sessionId}`);
 
         if (response.data.status === 'success') {
-          setPaymentStatus('Payment Successful!');
+         
           if (!hasAlerted) {
             alert('Payment Successful!');  // Show success message
             setHasAlerted(true);  // Prevent further alerts
           }
           navigate('/products');  // Redirect to the products page after alert
         } else {
-          setPaymentStatus('Payment Failed. Please try again.');
+        
           if (!hasAlerted) {
             alert('Payment Failed. Please try again.');  // Show failure message
             setHasAlerted(true);  // Prevent further alerts
@@ -39,7 +38,7 @@ const PaymentSuccessPage = () => {
           navigate('/products');  // Redirect to the products page after alert
         }
       } catch (error) {
-        setErrorMessage('An error occurred while verifying the payment.');
+    
         console.error(error);
         if (!hasAlerted) {
           alert('An error occurred while verifying the payment.');
@@ -50,11 +49,10 @@ const PaymentSuccessPage = () => {
     };
 
     fetchPaymentStatus();
-  }, [hasAlerted]);  // Add `hasAlerted` and `navigate` as dependencies
+  }, [hasAlerted,navigate]);  // Add `hasAlerted` and `navigate` as dependencies
 
   return (
     <div>
-  
     </div>
   );
 };
