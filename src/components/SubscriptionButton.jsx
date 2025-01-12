@@ -1,14 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const UserProductsButton = ({ onClose }) => {
+const SubscriptionButton = ({ onClose }) => {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
     if (onClose) {
       onClose();
     }
-    navigate("/myproducts/");
+    navigate("/subscription");
   };
 
   return (
@@ -16,9 +16,9 @@ const UserProductsButton = ({ onClose }) => {
       onClick={handleNavigate}
       className="w-full px-4 py-2 text-left bg-accentColour rounded hover:bg-accentColourHover"
     >
-      My Products
+      Subscribe
     </button>
   );
 };
 
-export default UserProductsButton;
+export default SubscriptionButton;
