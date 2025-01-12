@@ -1,6 +1,6 @@
 import React from "react";
 
-const DashboardButton = ({ navigate, onClose }) => {
+const DashBoardButton = ({ navigate, onClose }) => {
   return (
     <button
       onClick={() => {
@@ -14,4 +14,4 @@ const DashboardButton = ({ navigate, onClose }) => {
   );
 };
 
-export default DashboardButton;
+export default DashBoardButton;
