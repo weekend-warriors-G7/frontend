@@ -8,7 +8,7 @@ const AnalyticsDashboardButton = ({ onClose }) => {
     if (onClose) {
       onClose();
     }
-    navigate("/analytics");
+    navigate("/analytics-dashboard");
   };
 
   return (
