@@ -6,6 +6,8 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext"; // Import AuthContext
 import { fetchUserRole } from "../utils/user";
 import BurgerMenu from "./BurgerMenu";
+import logo from './../assets/logo.png';
+
 const Header = () => {
   const { isAuthenticated } = useContext(AuthContext); // Access auth state
   const { setSearchQuery } = useSearch(); // Access search context to update the query
@@ -35,29 +37,32 @@ const Header = () => {
   // Redirect to login if not authenticated
 
   return (
-    <header className="fixed top-0 left-0 w-full bg-elemColour text-white z-10 p-4 flex justify-between items-center">
+    <header className="h-[80px] px-20 fixed top-0 left-0 w-full bg-elemColour text-white z-10 p-4 flex justify-between items-center">
       <h1
-        className="font-qbold text-xl cursor-pointer"
+        className="font-qbold text-2xl cursor-pointer flex items-center space-between w-1/3"
         onClick={() => navigate("/")}
       >
-        Handmade Shop
+        Clothique
+        <img src={logo} alt="" className="h-[60px] mx-2" />
       </h1>
       {isAuthenticated && (
         <>
-          <div className="relative flex items-center">
+          <div className="relative flex items-center w-1/3">
             <input
               type="text"
               placeholder="Search for products..."
-              className="border border-gray-300 rounded-lg pl-10 pr-4 py-2 text-black focus:outline-none focus:ring focus:ring-accentColour"
+              className="w-full border border-gray-300 rounded-lg px-10 py-2 text-black focus:outline-none focus:ring focus:ring-accentColour"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)} // Update local input value
               onKeyDown={handleKeyDown} // Handle Enter key press
             />
             <FaSearch className="absolute left-3 text-gray-400" />
           </div>
-          <nav className="flex items-center space-x-4">
-            <BurgerMenu role={role} navigate={navigate} />
-          </nav>
+          <div className="w-1/3 flex justify-end">
+            <nav className="flex items-center">
+              <BurgerMenu role={role} navigate={navigate} />
+            </nav>
+          </div>
         </>
       )}
     </header>

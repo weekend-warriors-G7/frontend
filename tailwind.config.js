@@ -13,8 +13,8 @@ module.exports = {
       colors: {
         transparent: 'transparent',
         current: 'currentColor',
-        accentColour: '#752F55',
-        elemColour: '#E2B6CF',
+        accentColour: '#b287a3',
+        elemColour: '#7e4d60',
         linkColour: '#5C95FF',
         bgColour: '#F6EFEE'
       },
