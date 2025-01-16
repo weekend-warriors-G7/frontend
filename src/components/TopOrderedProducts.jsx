@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../axiosInstance";
+import { useNavigate } from "react-router-dom";
 
 const TopOrderedProducts = () => {
   const [topProducts, setTopProducts] = useState([]);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTopProducts = async () => {
@@ -20,6 +22,10 @@ const TopOrderedProducts = () => {
     fetchTopProducts();
   }, []);
 
+  const handleProductClick = (productId) => {
+    navigate(`/products/${productId}`);
+  };
+
   return (
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-4">Top 10 Most Ordered Products</h2>
@@ -28,9 +34,10 @@ const TopOrderedProducts = () => {
         {topProducts.map((item, index) => (
           <li
             key={index}
-            className="flex flex-col p-4 bg-white rounded-lg shadow-md"
+            className="flex flex-col p-4 bg-white rounded-lg shadow-md cursor-pointer"
+            onClick={() => handleProductClick(item.product.id)}
           >
-            <h3 className="font-bold text-lg">{item.product.name}</h3>
+            <h3 className="font-bold text-lg text-accentColour">{item.product.name}</h3>
             <p className="text-sm text-gray-600">Orders: {item.orderCount}</p>
             <p className="text-sm text-gray-600">
               Price: ${item.product.price}

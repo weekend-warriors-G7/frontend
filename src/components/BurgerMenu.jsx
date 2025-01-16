@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import UserProductsButton from "./UserProductsButton";
+import UserOrdersButton from "./UserOrdersButton";
 import SubscriptionButton from "./SubscriptionButton";
 import AddProductButton from "./AddProductButton";
 import LogoutButton from "./LogoutButton";
@@ -16,7 +17,7 @@ const BurgerMenu = ({ role, navigate }) => {
       {!menuOpen && (
         <button
           onClick={() => setMenuOpen(true)}
-          className="text-white text-3xl fixed top-4 right-4 z-50 focus:outline-none"
+          className="text-white text-3xl z-50 focus:outline-none"
         >
           <FaBars />
         </button>
@@ -50,6 +51,7 @@ const BurgerMenu = ({ role, navigate }) => {
           <AddProductButton onClose={() => setMenuOpen(false)} />
           <UserProductsButton onClose={() => setMenuOpen(false)} />
           {role === "USER" && !loading && !isSubscribed && ( // Show button only if not subscribed
+
             <SubscriptionButton onClose={() => setMenuOpen(false)} />
           )}
           {(role === "ADMIN" || isSubscribed) && (

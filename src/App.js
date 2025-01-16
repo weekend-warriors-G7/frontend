@@ -14,6 +14,7 @@ import { FilterProvider } from "./context/FilterContext";
 import UpdateProductForm from "./routes/UpdateProductForm";
 import AdminDashboard from "./routes/AdminDashboard";
 import UserProducts from "./components/UserProducts";
+import UserOrders from "./components/UserOrders";
 import AnalyticsDashboard from "./routes/AnalyticsDashboard";
 import SubscriptionPage from "./routes/SubscriptionPage";
 import { SubscriptionProvider } from "./context/SubscriptionContext";
@@ -52,6 +53,7 @@ function App() {
                 <Route path="products" element={<ProductList />} />
                 <Route path="dashboard" element={<AdminDashboard />} />
                 <Route path="myproducts" element={<UserProducts />} />
+                <Route path="myorders" element={<UserOrders />} />
                 <Route
                   path="/update-product/:id"
                   element={<UpdateProductForm />}
