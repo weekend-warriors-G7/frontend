@@ -50,6 +50,7 @@ const BurgerMenu = ({ role, navigate }) => {
           )}
           <AddProductButton onClose={() => setMenuOpen(false)} />
           <UserProductsButton onClose={() => setMenuOpen(false)} />
+          <UserOrdersButton onClose={() => setMenuOpen(false)} />
           {role === "USER" && !loading && !isSubscribed && ( // Show button only if not subscribed
 
             <SubscriptionButton onClose={() => setMenuOpen(false)} />
