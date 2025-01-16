@@ -4,6 +4,7 @@ import UserProductsButton from "./UserProductsButton";
 import SubscriptionButton from "./SubscriptionButton";
 import AddProductButton from "./AddProductButton";
 import LogoutButton from "./LogoutButton";
+import AnalyticsDashboardButton from "./AnalyticsDashboardButton";
 
 const BurgerMenu = ({ role, navigate }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -48,6 +49,9 @@ const BurgerMenu = ({ role, navigate }) => {
           <UserProductsButton onClose={() => setMenuOpen(false)} />
           {role === "USER" && (
             <SubscriptionButton onClose={() => setMenuOpen(false)} />
+          )}
+          {role === "ADMIN" && (
+            <AnalyticsDashboardButton onClose={() => setMenuOpen(false)} />
           )}
           <LogoutButton onClose={() => setMenuOpen(false)} />
         </nav>
