@@ -31,7 +31,7 @@ const TopSearchedKeywords = () => {
       <h2 className="text-2xl font-bold mb-4">Top 10 Most Searched Keywords</h2>
       {error && <p className="text-red-500">{error}</p>}
 
-      <div className="flex space-x-4">
+      <div className="flex space-x-4  font-bold">
         <ul className="flex flex-col space-y-4">
           {leftColumn.map((item, index) => (
             <li
@@ -46,7 +46,7 @@ const TopSearchedKeywords = () => {
               <span>{item.keyword}</span>
               {hoveredIndex === index && (
                 <div
-                  className="absolute top-[-40px] left-1/2 transform -translate-x-1/2 bg-accentColour text-white text-sm rounded px-3 py-1 shadow-lg z-10"
+                  className="absolute top-[39px] left-1/2 transform -translate-x-1/2 bg-accentColour text-white text-sm rounded px-3 py-1 shadow-lg z-10"
                   style={{ whiteSpace: "nowrap" }}
                 >
                   {item.number} searches
@@ -67,7 +67,7 @@ const TopSearchedKeywords = () => {
               <span>{item.keyword}</span>
               {hoveredIndex === index + 5 && (
                 <div
-                  className="absolute top-[-40px] left-1/2 transform -translate-x-1/2 bg-accentColour text-white text-sm rounded px-3 py-1 shadow-lg z-10"
+                  className="absolute top-[39px] left-1/2 transform -translate-x-1/2 bg-accentColour text-white text-sm rounded px-3 py-1 shadow-lg z-10"
                   style={{ whiteSpace: "nowrap" }}
                 >
                   {item.number} searches
