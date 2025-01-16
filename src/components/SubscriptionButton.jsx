@@ -1,14 +1,33 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import axiosInstance from "../axiosInstance";
 
 const SubscriptionButton = ({ onClose }) => {
-  const navigate = useNavigate();
 
-  const handleNavigate = () => {
+
+  const handleNavigate = async () => {
     if (onClose) {
       onClose();
     }
-    navigate("/subscription");
+
+      try {
+        const response = await axiosInstance.post(
+          `/checkout/subscribe`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+  
+  
+        const data = await response.data;
+        if (data.url) {
+          window.location.href=data.url; // Redirect to Stripe Checkout
+        }
+      } catch (error) {
+        console.error("Error redirecting to Stripe Checkout", error);
+      }
+   
   };
 
   return (

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axiosInstance from "../axiosInstance";
 import { useNavigate } from "react-router-dom";
 
-const PaymentSuccessPage = () => {
+const SubscriptionPage = () => {
     
   const [hasAlerted, setHasAlerted] = useState(false);  // State to track if alert was shown
   const navigate = useNavigate();
@@ -13,7 +13,6 @@ const PaymentSuccessPage = () => {
         // Extract the session ID from the URL (Stripe redirects with this)
         const urlParams = new URLSearchParams(window.location.search);
         const sessionId = urlParams.get('session_id');
-        const productId = urlParams.get('product_id');
 
         if (!sessionId) {
           
@@ -21,19 +20,19 @@ const PaymentSuccessPage = () => {
         }
 
         // Call the backend to verify the payment status
-        const response = await axiosInstance.get(`/payments/verify-session/${sessionId}/${productId}`);
+        const response = await axiosInstance.get(`/payments/verify-subscription/${sessionId}`);
 
-        if (response.data.status === 'success') {
+        if (response.data.status === 'active') {
          
           if (!hasAlerted) {
-            alert('Payment Successful!');  // Show success message
+            alert('Subscription Successful!');  // Show success message
             setHasAlerted(true);  // Prevent further alerts
           }
           navigate('/products');  // Redirect to the products page after alert
         } else {
         
           if (!hasAlerted) {
-            alert('Payment Failed. Please try again.');  // Show failure message
+            alert('Subscription Failed. Please try again.');  // Show failure message
             setHasAlerted(true);  // Prevent further alerts
           }
           navigate('/products');  // Redirect to the products page after alert
@@ -58,4 +57,4 @@ const PaymentSuccessPage = () => {
   );
 };
 
-export default PaymentSuccessPage;
+export default SubscriptionPage;

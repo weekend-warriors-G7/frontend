@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import UserProductsButton from "./UserProductsButton";
 import SubscriptionButton from "./SubscriptionButton";
 import AddProductButton from "./AddProductButton";
 import LogoutButton from "./LogoutButton";
 import AnalyticsDashboardButton from "./AnalyticsDashboardButton";
+import { SubscriptionContext } from "../context/SubscriptionContext"; // Import SubscriptionContext
 
 const BurgerMenu = ({ role, navigate }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { isSubscribed, loading } = useContext(SubscriptionContext); // Access subscription state
 
   return (
     <div>
@@ -47,10 +49,10 @@ const BurgerMenu = ({ role, navigate }) => {
           )}
           <AddProductButton onClose={() => setMenuOpen(false)} />
           <UserProductsButton onClose={() => setMenuOpen(false)} />
-          {role === "USER" && (
+          {role === "USER" && !loading && !isSubscribed && ( // Show button only if not subscribed
             <SubscriptionButton onClose={() => setMenuOpen(false)} />
           )}
-          {role === "ADMIN" && (
+          {(role === "ADMIN" || isSubscribed) && (
             <AnalyticsDashboardButton onClose={() => setMenuOpen(false)} />
           )}
           <LogoutButton onClose={() => setMenuOpen(false)} />
