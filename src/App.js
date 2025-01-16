@@ -16,6 +16,8 @@ import AdminDashboard from "./routes/AdminDashboard";
 import UserProducts from "./components/UserProducts";
 import UserOrders from "./components/UserOrders";
 import AnalyticsDashboard from "./routes/AnalyticsDashboard";
+import SubscriptionPage from "./routes/SubscriptionPage";
+import { SubscriptionProvider } from "./context/SubscriptionContext";
 
 // Function to check if the user is authenticated
 function isAuthenticated() {
@@ -35,6 +37,7 @@ function HomeRedirect() {
 function App() {
   return (
     <AuthProvider>
+    <SubscriptionProvider>
       <SearchProvider>
         <FilterProvider>
           <BrowserRouter>
@@ -56,6 +59,7 @@ function App() {
                   element={<UpdateProductForm />}
                 />
                 <Route path="/success/" element={<PaymentSuccessPage />} />
+                <Route path="/subscription-success/" element={<SubscriptionPage />} />
                 <Route
                   path="/analytics-dashboard"
                   element={<AnalyticsDashboard />}
@@ -66,6 +70,7 @@ function App() {
           </BrowserRouter>
         </FilterProvider>
       </SearchProvider>
+      </SubscriptionProvider>
     </AuthProvider>
   );
 }
